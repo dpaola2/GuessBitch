@@ -37,6 +37,7 @@ Keeping the clients stateless means that any errors or exceptions can merely be 
 # Database Schema
 
 I think a schemaless, key-value store might be best for this sort of program.  The keys will therefore be the alphanumeric identifer and the values will be an encapsulated snapshot of the game state.  This can be JSON, something like the following:
+
 ```javascript
 {
     ‘timestamp’:’2011-04-28-05:55:36PM’,
