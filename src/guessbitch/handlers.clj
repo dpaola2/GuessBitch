@@ -12,7 +12,7 @@
 
 (defn state-handler [{params :params}]
     (try
-        (retrieve-state (params :id))
+        (str (retrieve-state (params :id)))
         (catch Exception e (str e))))
 
 (defn action-handler [{params :params}]
