@@ -37,29 +37,29 @@ Keeping the clients stateless means that any errors or exceptions can merely be 
 # Database Schema
 
 I think a schemaless, key-value store might be best for this sort of program.  The keys will therefore be the alphanumeric identifer and the values will be an encapsulated snapshot of the game state.  This can be JSON, something like the following:
-
-	{
-		‘timestamp’:’2011-04-28-05:55:36PM’,
-		‘players’: [‘5hfdssh’, ‘u5oi6j45’],
-		‘waiting_on’: ‘5hfdssh’,
-		‘boards’: {
-        ‘5hfdssh’: [
-            {‘kanye’: ‘flipped’},
-            {‘obama’: ‘exposed’},
-            ...
-        ],
-        ‘u5oi6j45’: [
-            {‘bill_gates’: ‘flipped’},
-            {‘steve_jobs’: ‘flipped’},
-            ...
-        ]
-        },
-		‘num_questions’: {
-			‘5hfdssh’:5,
-			‘u5oi6j45’:6
-		}
-	}
-
+```javascript
+{
+    ‘timestamp’:’2011-04-28-05:55:36PM’,
+    ‘players’: [‘5hfdssh’, ‘u5oi6j45’],
+    ‘waiting_on’: ‘5hfdssh’,
+    ‘boards’: {
+    ‘5hfdssh’: [
+        {‘kanye’: ‘flipped’},
+        {‘obama’: ‘exposed’},
+        ...
+    ],
+    ‘u5oi6j45’: [
+        {‘bill_gates’: ‘flipped’},
+        {‘steve_jobs’: ‘flipped’},
+        ...
+    ]
+    },
+    ‘num_questions’: {
+        ‘5hfdssh’:5,
+        ‘u5oi6j45’:6
+    }
+}
+```
 Note that players have unique alphanumeric identifiers internally.  These can be calculated upon joining a game (handshake), possibly by hashing a given username with the IP address.  The clients are then made aware of their identifiers and provide them on subsequent API calls or polls.
 
 When a game is finished, a “winner” key can be added to this JSON structure corresponding to the unique identifier for that player.  Every game action will happen as follows (on the server):
@@ -83,19 +83,19 @@ SOLUTION: use a message queue PER GAME.  actions are queued up, and if they’re
 
 ## Samples
 ```javascript
-    {
-        'player': "5hfdssh",
-        'type': "question",
-        'data': "Anybody with red hair?"
-    }
+{
+    'player': "5hfdssh",
+    'type': "question",
+    'data': "Anybody with red hair?"
+}
 
-    {
-        'player': "5hfdssh",
-        'type': 'update-board',
-        'data': {
-            'kanye': "flipped",
-            'obama': "flipped",
-            ...
-        }
+{
+    'player': "5hfdssh",
+    'type': 'update-board',
+    'data': {
+        'kanye': "flipped",
+        'obama': "flipped",
+        ...
     }
+}
 ```
