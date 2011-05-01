@@ -40,24 +40,24 @@ I think a schemaless, key-value store might be best for this sort of program.  T
 
 ```javascript
 {
-    ‘timestamp’:’2011-04-28-05:55:36PM’,
-    ‘players’: [‘5hfdssh’, ‘u5oi6j45’],
-    ‘waiting_on’: ‘5hfdssh’,
-    ‘boards’: {
-    ‘5hfdssh’: [
-        {‘kanye’: ‘flipped’},
-        {‘obama’: ‘exposed’},
+    "timestamp":"2011-04-28-05:55:36PM",
+    "players": ["5hfdssh", "u5oi6j45"],
+    "waiting_on": "5hfdssh",
+    "boards": {
+    "5hfdssh": [
+        {"kanye": "flipped"},
+        {"obama": "exposed"},
         ...
     ],
-    ‘u5oi6j45’: [
-        {‘bill_gates’: ‘flipped’},
-        {‘steve_jobs’: ‘flipped’},
+    "u5oi6j45": [
+        {"bill_gates": "flipped"},
+        {"steve_jobs": "flipped"},
         ...
     ]
     },
-    ‘num_questions’: {
-        ‘5hfdssh’:5,
-        ‘u5oi6j45’:6
+    "num_questions": {
+        "5hfdssh":5,
+        "u5oi6j45":6
     }
 }
 ```
@@ -85,17 +85,17 @@ SOLUTION: use a message queue PER GAME.  actions are queued up, and if they’re
 ## Samples
 ```javascript
 {
-    'player': "5hfdssh",
-    'type': "question",
-    'data': "Anybody with red hair?"
+    "player": "5hfdssh",
+    "type": "question",
+    "data": "Anybody with red hair?"
 }
 
 {
-    'player': "5hfdssh",
-    'type': 'update-board',
-    'data': {
-        'kanye': "flipped",
-        'obama': "flipped",
+    "player": "5hfdssh",
+    "type": "update-board",
+    "data": {
+        "kanye": "flipped",
+        "obama": "flipped",
         ...
     }
 }
