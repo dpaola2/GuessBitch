@@ -24,10 +24,10 @@ website (the only one, at first)
 Games have two players.  Players have game boards.  Game boards contain N slots (N=12 initially).  Slots have two states: exposed or flipped.  When exposed, they’ll have unique photos, when flipped they’ll have a uniform color or logo.
 
 At any given time, the server must maintain the following information about the current state of the game (reflected in the database schema):
-* The state of each player’s board and corresponding slots
-* How many questions each player has asked (and what questions they’ve asked?)
-* The duration of the game
-* Which player we’re waiting for (to ask a question)
+ * The state of each player’s board and corresponding slots
+ * How many questions each player has asked (and what questions they’ve asked?)
+ * The duration of the game
+ * Which player we’re waiting for (to ask a question)
 
 The clients will poll the API every N seconds to retrive the game state.  Player A asks a question, which will be sent to the API.  Then, on the next game state retrieval by Player B, the question will be displayed.  Player B will select the slots that correspond to the question, then click on a “finished” button of some kind.  This will send that player’s new state to the API, which will then be reflected the next time Player A polls the API for the game state.  The game proceeds thus until one of the players has no remaining slots.  
 
