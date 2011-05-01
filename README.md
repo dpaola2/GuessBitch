@@ -43,17 +43,17 @@ I think a schemaless, key-value store might be best for this sort of program.  T
 		‘players’: [‘5hfdssh’, ‘u5oi6j45’],
 		‘waiting_on’: ‘5hfdssh’,
 		‘boards’: {
-	‘5hfdssh’: [
-		{‘kanye’: ‘flipped’},
-		{‘obama’: ‘exposed’},
-		…
-	],
-	‘u5oi6j45’: [
-		{‘bill_gates’: ‘flipped’},
-		{‘steve_jobs’: ‘flipped’},
-		...
-	]
-	},
+        ‘5hfdssh’: [
+            {‘kanye’: ‘flipped’},
+            {‘obama’: ‘exposed’},
+            ...
+        ],
+        ‘u5oi6j45’: [
+            {‘bill_gates’: ‘flipped’},
+            {‘steve_jobs’: ‘flipped’},
+            ...
+        ]
+        },
 		‘num_questions’: {
 			‘5hfdssh’:5,
 			‘u5oi6j45’:6
@@ -73,3 +73,29 @@ This design will allow both sides to operate asynchronously and handle failures 
 PROBLEM: think about concurrency issues here.  If Player A’s API call gets routed to server A and player B’s request gets routed to server B, they access the same database.  if an action is performed, the gamestate is calculated on both requests, one of them will beat the other and one of the player’s actions will be lost.  Basically it’s a race condition.  The “waiting_on” attribute might act as a lock -- don’t recalculate anything for this player if it isn’t the same as the “waiting_on” character.  There’s still a race condition there, though.  If I’m checking, and during that time, the correct player modifies the database, the server’s response will still throw away that users action, even though it will now be the correct player.  
 
 SOLUTION: use a message queue PER GAME.  actions are queued up, and if they’re incorrect, they can just be discarded.  the server’s functionality will be completely independent of whether or not there are clients waiting.  or rather, anything that MODIFIES the database (actions) are queued up; polls by the client can just query the database and return the state.  done.
+
+# Action Schema
+
+* Actions will be POSTed to /action/<game-identifier>
+* Possible action:
+ * question
+ * update-board
+
+## Samples
+```javascript
+    {
+        'player': "5hfdssh",
+        'type': "question",
+        'data': "Anybody with red hair?"
+    }
+
+    {
+        'player': "5hfdssh",
+        'type': 'update-board',
+        'data': {
+            'kanye': "flipped",
+            'obama': "flipped",
+            ...
+        }
+    }
+```
