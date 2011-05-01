@@ -12,11 +12,13 @@
 (defroutes main-routes
     (GET "/state/:id" [] state-handler)
     (GET "/action/:id" [] action-handler)
-    (GET "/new" [] new-game-handler)
-    (route/not-found not-found-handler))
+    (GET "/new" [] new-game-handler))
 
 (defn -main [& args] 
     (run-jetty (-> 
                     (api main-routes)
-                    (wrap-reload '(guessbitch.core guessbitch.handlers))) 
+                    (wrap-reload 
+                        '(guessbitch.core 
+                        guessbitch.database
+                        guessbitch.handlers))) 
                 {:port 8080 :join? false}))

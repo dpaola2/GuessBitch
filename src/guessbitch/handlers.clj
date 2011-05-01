@@ -1,5 +1,6 @@
 (ns guessbitch.handlers
     (:use 
+        guessbitch.database
         compojure.core
         compojure.handler
         [clojure.data.json :only (json-str write-json read-json)]
@@ -7,21 +8,16 @@
         [ring.middleware params reload stacktrace]
         hiccup.core)
     (:require
-        [compojure.route :as route]
-        redis
-        digest))
-
-(defn new-key [ip-addr] 
-    (digest/md5 ip-addr))
+        [compojure.route :as route]))
 
 (defn state-handler [{params :params}]
-    (str "Querying for: " (params :id)))
+    (try
+        (retrieve-state (params :id))
+        (catch Exception e (str e))))
 
 (defn action-handler [{params :params}]
-    (str params))
+    "Not Implemented")
 
 (defn new-game-handler [params]
     (str (new-key (params :remote-addr))))
 
-(def not-found-handler
-    "404 Not Found")
